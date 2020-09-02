@@ -11,10 +11,33 @@
     <!-- open sans font -->
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 
+    <!-- local css -->
+    <link rel="stylesheet" href="{{ url_for(endpoint='static', filename='css/base.css') }}">
+
     <title>{% block title %} {% endblock %}</title>
 </head>
-<body style="font-family: 'Open Sans', sans-serif;">
-
+<body>
+    <header class="site-header">
+        <nav class="navbar navbar-expand-md sticky-top">
+            <div class="container">
+                <a class="navbar-brand mr-4 text-material-primary" href="/">Hades lite</a>
+                <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarToggle">
+                    <div class="navbar-nav mr-auto">
+                        <a class="nav-item nav-link text-material-primary" href="{{ url_for('index') }}">Home</a>
+                    <a class="nav-item nav-link text-material-primary" href="{{ url_for('index') }}">Placeholder</a>
+                    </div>
+                    <!-- Navbar Right Side -->
+                    <div class="navbar-nav">
+                        <a class="nav-item nav-link text-material-primary" href="{{ url_for('login') }}">Login</a>
+                        <a class="nav-item nav-link text-material-primary" href="{{ url_for('register') }}">Register</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+      </header>
     <div class="container">
         {% block content %}{% endblock %}
     </div>
