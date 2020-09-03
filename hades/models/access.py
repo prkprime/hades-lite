@@ -1,7 +1,7 @@
 from hades import db
 
-from .user import User
-from .event import Event
+from hades.models.user import User
+from hades.models.event import Event
 
 class Access(db.Model):
 
