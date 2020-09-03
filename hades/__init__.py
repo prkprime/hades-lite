@@ -23,3 +23,7 @@ def login():
     if form.validate_on_submit():
         return redirect(url_for('index'))
     return render_template('login.html', title='Login', form=form)
+
+@app.route('/reset_password')
+def reset_password():
+    return redirect(url_for('login'))
