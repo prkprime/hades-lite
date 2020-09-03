@@ -2,18 +2,19 @@ from flask import Flask, render_template, url_for, flash, redirect
 from .assets.forms import RegistrationForm, LoginForm
 from flask_sqlalchemy import SQLAlchemy
 
-
+database_name = 'test'
 #create the app
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'NeedToCreateEnvVariableForThis'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hades.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+database_name+'.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-from .models.user import Users
-from .models.event import Events
-from .models.participant import Participants
+from .models.user import User
+from .models.event import Event
+from .models.participant import Participant
+from .models.access import Access
 
 @app.route('/admin')
 def admin():

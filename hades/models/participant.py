@@ -1,6 +1,6 @@
 from hades import db
 
-class Participants(db.Model):
+class Participant(db.Model):
 
     __tablename__ = 'participants'
 
