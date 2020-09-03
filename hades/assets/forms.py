@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
-from wtforms.validators import DataRequired, Length, Email, EqualTo
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+
+from hades.models.user import User
 
 class RegistrationForm(FlaskForm):
     username = StringField(
@@ -32,6 +34,16 @@ class RegistrationForm(FlaskForm):
         ]
     )
     submit = SubmitField('Register')
+
+    def validate_username(self, username):
+        user = User.query.filter_by(username=username.data).first()
+        if user:
+            raise ValidationError('Username is already taken. Please choose different username')
+    
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user:
+            raise ValidationError('Account for this email is already created.')
 
 class LoginForm(FlaskForm):
     username = StringField(
