@@ -4,6 +4,7 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 
 database_name = 'test'
+master_password = 'password'
 #create the app
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'NeedToCreateEnvVariableForThis'

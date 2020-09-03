@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request
 from flask_login import login_user, logout_user, current_user, login_required
 
-from hades.assets.forms import RegistrationForm, LoginForm
+from hades.assets.forms import RegistrationForm, LoginForm, ChangePasswordForm
 from hades.models.user import User
 from hades.models.event import Event
 from hades.models.participant import Participant
@@ -28,24 +28,40 @@ def register():
 
 @app.route('/admin/login', methods=['GET', 'POST'])
 def login():
-
     if current_user.is_authenticated:
         return redirect(url_for('admin'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
-        if user and bcrypt.check_password_hash(user.password, form.password.data):
+        if user and user.approved and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember_me.data)
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('admin'))
-        flash('Login Unsuccessful. Please check username or password.', 'danger')
+        elif not user.approved and bcrypt.check_password_hash(user.password, form.password.data):
+            flash('Your account hasn\'t been approved yet', 'info')
+        else:
+            flash('Login Unsuccessful. Please check username or password.', 'danger')
     return render_template('login.html', title='Login', form=form)
 
-@app.route('/admin/reset_password')
+@app.route('/admin/reset-password')
 def reset_password():
     return redirect(url_for('login'))
+
+@app.route('/admin/change-password', methods=['GET', 'POST'])
+@login_required
+def change_password():
+    form = ChangePasswordForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=current_user.username).first()
+        if user:
+            user.password = bcrypt.generate_password_hash(form.new_password.data).decode('UTF-8')
+            db.session.add(user)
+            db.session.commit()
+            flash('Password updated successfully.', 'success')
+    return render_template('change_password.html', title='Change Password', form=form)
 
 @app.route('/admin/logout')
 def logout():
     logout_user()
     return redirect(url_for('login'))
+
