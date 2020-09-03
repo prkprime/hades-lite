@@ -21,7 +21,10 @@ def register():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        return redirect(url_for('index'))
+        if form.username.data == 'prkprime' and form.password.data == 'prkaly007':
+            return redirect(url_for('index'))
+        else:
+            flash('Login Unsuccessful. Please check username or password.', 'danger')
     return render_template('login.html', title='Login', form=form)
 
 @app.route('/reset_password')
