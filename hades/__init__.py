@@ -1,9 +1,19 @@
 from flask import Flask, render_template, url_for, flash, redirect
-from hades.assets.forms import RegistrationForm, LoginForm
+from .assets.forms import RegistrationForm, LoginForm
+from flask_sqlalchemy import SQLAlchemy
+
 
 #create the app
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'NeedToCreateEnvVariableForThis'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hades.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+
+from .models.user import Users
+from .models.event import Events
+from .models.participant import Participants
 
 @app.route('/')
 def index():
