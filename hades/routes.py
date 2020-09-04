@@ -21,7 +21,7 @@ def register():
     if request.method == 'POST':
         if form.validate_on_submit():
             hashed_passwd = bcrypt.generate_password_hash(form.password.data).decode('UTF-8')
-            user = User(username=form.username.data, email=form.email.data, password=hashed_passwd)
+            user = User(username=form.username.data.lower(), email=form.email.data.lower(), password=hashed_passwd)
             db.session.add(user)
             db.session.commit()
             flash('Your Account has been created successfully!', 'success')
@@ -40,7 +40,7 @@ def login():
                 login_user(user, remember=form.remember_me.data)
                 next_page = request.args.get('next')
                 return redirect(next_page) if next_page else redirect(url_for('admin'))
-            elif not user.approved and bcrypt.check_password_hash(user.password, form.password.data):
+            elif user and not user.approved and bcrypt.check_password_hash(user.password, form.password.data):
                 flash('Your account hasn\'t been approved yet', 'info')
             else:
                 flash('Login Unsuccessful. Please check username or password.', 'danger')
@@ -62,8 +62,8 @@ def account():
         flash('Password updated successfully.', 'success')
         return redirect(url_for('account'))
     if account_form.update.data and account_form.validate_on_submit():
-        current_user.username = account_form.username.data
-        current_user.email = account_form.email.data
+        current_user.username = account_form.username.data.lower()
+        current_user.email = account_form.email.data.lower()
         db.session.add(current_user)
         db.session.commit()
         flash('Account updated successfully.', 'success')
