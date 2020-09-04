@@ -27,3 +27,6 @@ body {
 .white-checkbox {
     background-color: #FFFFFF;
 }
+tr td {
+    white-space: nowrap;
+}

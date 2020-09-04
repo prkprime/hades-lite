@@ -5,91 +5,104 @@
 {% endblock title %}
 
 {% block content %}    
-    <div class="row mt-4">
-        <div class="col-md-4 offset-md-4">
-            {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endif%}
-            {% endwith %}
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="mt-4">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif%}
+                {% endwith %}
 
-            {% if pending_user_forms %}
-                    <div class="">
-                        <h3 class="text-material-primary">Pending Users</h3>
-                    </div>
-                    <table class="text-material-primary">
-                        <tr>
-                            <th>
-                                Username
-                            </th>
-                            <th>
-                                Email
-                            </th>
-                            <th>
-                                Approve
-                            </th>
-                            <th>
-                                Delete
-                            </th>
-                        </tr>
-                        {% for form in pending_user_forms %}
+                {% if pending_user_forms %}
+                    <legend class="border-bottom mb-4 text-material-primary">Pending Users</legend>
+                    <div class="table-responsive">
+                        <table class="text-material-primary">
                             <tr>
-                                <form action="#", method="POST">
-                                    <td>
-                                        {{ form.username() }}
-                                    </td>
-                                    <td>
-                                        {{ form.email() }}
-                                    </td>
-                                    <td>
-                                        {{ form.approve(class="btn") }}
-                                    </td>
-                                    <td>
-                                        {{ form.delete(class="btn") }}
-                                    </td>
-                                </form>
+                                <th>
+                                    Username
+                                </th>
+                                <th>
+                                    Email
+                                </th>
+                                <th>
+                                    Approve
+                                </th>
+                                <th>
+                                    Reject
+                                </th>
                             </tr>
-                        {% endfor %}
-                    </table>
-            {% endif %}
-
-            {% if approved_user_forms %}
-                    <div class="">
-                        <h3 class="text-material-primary">Users</h3>
+                            {% for id, form in pending_user_forms.items() %}
+                                <tr>
+                                    <form action="#", method="POST">
+                                        <td>
+                                            {{ form.username(readonly=True) }}
+                                        </td>
+                                        <td>
+                                            {{ form.email(readonly=True) }}
+                                        </td>
+                                        <td>
+                                            {{ form.approve(class="btn") }}
+                                        </td>
+                                        <td>
+                                            {{ form.reject(class="btn") }}
+                                        </td>
+                                    </form>
+                                </tr>
+                            {% endfor %}
+                        </table>
                     </div>
-                    <table class="text-material-primary">
-                        <tr>
-                            <th>
-                                Username
-                            </th>
-                            <th>
-                                Email
-                            </th>
-                            <th>
-                                Delete
-                            </th>
-                        </tr>
-                        {% for form in approved_user_forms %}
+                {% endif %}
+            </div>
+            <div class="mt-4">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif%}
+                {% endwith %}
+    
+                {% if approved_user_forms %}
+                    <legend class="border-bottom mb-4 text-material-primary">Approved Users</legend>
+                    <div class="table-responsive">
+                        <table class="text-material-primary">
                             <tr>
-                                <form action="#", method="POST">
-                                    <td>
-                                        {{ form.username() }}
-                                    </td>
-                                    <td>
-                                        {{ form.email() }}
-                                    </td>
-                                    <td>
-                                        {{ form.delete(class="btn") }}
-                                    </td>
-                                </form>
+                                <th>
+                                    Username
+                                </th>
+                                <th>
+                                    Email
+                                </th>
+                                <th>
+                                    Delete
+                                </th>
                             </tr>
-                        {% endfor %}
-                    </table>
-            {% endif %}
+                            {% for id, form in approved_user_forms.items() %}
+                                <tr>
+                                    <form action="#", method="POST">
+                                        <td>
+                                            {{ form.username(readonly=True) }}
+                                        </td>
+                                        <td>
+                                            {{ form.email(readonly=True) }}
+                                        </td>
+                                        <td>
+                                            {{ form.delete(class="btn") }}
+                                        </td>
+                                    </form>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                {% endif %}
+            </div>
         </div>
     </div>
 {% endblock content%}

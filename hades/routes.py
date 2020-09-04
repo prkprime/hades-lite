@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request
 from flask_login import login_user, logout_user, current_user, login_required
 
-from hades.assets.forms import RegistrationForm, LoginForm, ChangePasswordForm, AccountForm
+from hades.assets.forms import RegistrationForm, LoginForm, ChangePasswordForm, AccountForm, PendingUserForm, ApprovedUserForm
 from hades.models.user import User
 from hades.models.event import Event
 from hades.models.participant import Participant
@@ -76,16 +76,20 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
-'''
 @app.route('/admin/users', methods=['GET', 'POST'])
 def users():
     users = User.query.all()
-    approved_user_forms = []
-    pending_user_forms = []
+    approved_user_forms = {}
+    pending_user_forms = {}
     for user in users:
         if user.approved:
-            approved_user_forms.append(UserForm(user))
+            form = ApprovedUserForm()
+            form.username.data = user.username
+            form.email.data = user.email
+            approved_user_forms[user.id] = form
         else:
-            pending_user_forms.append(UserForm(user, approved=False))
+            form = PendingUserForm()
+            form.username.data = user.username
+            form.email.data = user.email
+            pending_user_forms[user.id] = form
     return render_template('users.html', title='Users', approved_user_forms=approved_user_forms, pending_user_forms=pending_user_forms)
-    '''

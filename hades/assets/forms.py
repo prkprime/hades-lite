@@ -108,3 +108,22 @@ class AccountForm(FlaskForm):
             user = User.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError('Account for this email is already created.')
+
+class PendingUserForm(FlaskForm):
+    username = StringField(
+        'Username',
+    )
+    email = StringField(
+        'Email'
+    )
+    approve = SubmitField('Approve')
+    reject = SubmitField('Reject')
+
+class ApprovedUserForm(FlaskForm):
+    username = StringField(
+        'Username',
+    )
+    email = StringField(
+        'Email'
+    )
+    delete = SubmitField('Delete')
