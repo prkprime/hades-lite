@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request
 from flask_login import login_user, logout_user, current_user, login_required
 
-from hades.assets.forms import RegistrationForm, LoginForm, ChangePasswordForm, UserForm
+from hades.assets.forms import RegistrationForm, LoginForm, ChangePasswordForm, AccountForm
 from hades.models.user import User
 from hades.models.event import Event
 from hades.models.participant import Participant
@@ -13,6 +13,7 @@ from hades import app, db, bcrypt, MASTER_PASSWORD
 @login_required
 def admin():
     return render_template('admin.html')
+
 
 @app.route('/admin/register', methods=['GET', 'POST'])
 def register():
@@ -47,24 +48,35 @@ def login():
 def reset_password():
     return redirect(url_for('login'))
 
-@app.route('/admin/change-password', methods=['GET', 'POST'])
+@app.route('/admin/account', methods=['GET', 'POST'])
 @login_required
-def change_password():
-    form = ChangePasswordForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=current_user.username).first()
-        if user:
-            user.password = bcrypt.generate_password_hash(form.new_password.data).decode('UTF-8')
-            db.session.add(user)
-            db.session.commit()
-            flash('Password updated successfully.', 'success')
-    return render_template('change_password.html', title='Change Password', form=form)
+def account():
+    passwd_form = ChangePasswordForm()
+    account_form = AccountForm()
+    if passwd_form.update.data and passwd_form.validate_on_submit():
+        current_user.password = bcrypt.generate_password_hash(passwd_form.new_password.data).decode('UTF-8')
+        db.session.add(current_user)
+        db.session.commit()
+        flash('Password updated successfully.', 'success')
+        return redirect(url_for('account'))
+    if account_form.update.data and account_form.validate_on_submit():
+        current_user.username = account_form.username.data
+        current_user.email = account_form.email.data
+        db.session.add(current_user)
+        db.session.commit()
+        flash('Account updated successfully.', 'success')
+        return redirect(url_for('account'))
+    elif request.method == 'GET':
+        account_form.username.data = current_user.username
+        account_form.email.data = current_user.email
+    return render_template('account.html', title='Change Password', account_form=account_form, passwd_form=passwd_form)
 
 @app.route('/admin/logout')
 def logout():
     logout_user()
     return redirect(url_for('login'))
 
+'''
 @app.route('/admin/users', methods=['GET', 'POST'])
 def users():
     users = User.query.all()
@@ -76,3 +88,4 @@ def users():
         else:
             pending_user_forms.append(UserForm(user, approved=False))
     return render_template('users.html', title='Users', approved_user_forms=approved_user_forms, pending_user_forms=pending_user_forms)
+    '''

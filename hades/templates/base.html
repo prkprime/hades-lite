@@ -27,12 +27,12 @@
                 <div class="collapse navbar-collapse" id="navbarToggle">
                     <div class="navbar-nav mr-auto">
                         <a class="nav-item nav-link text-material-primary" href="{{ url_for('admin') }}">Home</a>
-                    <a class="nav-item nav-link text-material-primary" href="{{ url_for('users') }}">Users</a>
+                    <a class="nav-item nav-link text-material-primary" href="{{ url_for('admin') }}">Users</a>
                     </div>
                     <!-- Navbar Right Side -->
                     <div class="navbar-nav">
                         {% if current_user.is_authenticated %}
-                        <a class="nav-item nav-link text-material-primary" href="{{ url_for('change_password') }}">Change Password</a>
+                        <a class="nav-item nav-link text-material-primary" href="{{ url_for('account') }}">Account</a>
                         <a class="nav-item nav-link text-material-primary" href="{{ url_for('logout') }}">Logout</a>
                         {% else %}
                         <a class="nav-item nav-link text-material-primary" href="{{ url_for('login') }}">Login</a>
