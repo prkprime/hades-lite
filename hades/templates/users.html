@@ -11,9 +11,11 @@
                 {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     {% for category, message in messages %}
-                        <div class="alert alert-{{ category }}">
-                            {{ message }}
-                        </div>
+                        {% if message.startswith('Approved') or message.startswith('Rejected') %}
+                            <div class="alert alert-{{ category }}">
+                                {{ message }}
+                            </div>
+                        {% endif %}
                     {% endfor %}
                 {% endif%}
                 {% endwith %}
@@ -51,6 +53,7 @@
                                         <td>
                                             {{ form.reject(class="btn") }}
                                         </td>
+                                        {{ form.id() }}
                                     </form>
                                 </tr>
                             {% endfor %}
@@ -62,9 +65,11 @@
                 {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     {% for category, message in messages %}
-                        <div class="alert alert-{{ category }}">
-                            {{ message }}
-                        </div>
+                        {% if message.startswith('Deleted') %}
+                            <div class="alert alert-{{ category }}">
+                                {{ message }}
+                            </div>
+                        {% endif %}
                     {% endfor %}
                 {% endif%}
                 {% endwith %}
@@ -96,6 +101,7 @@
                                         <td>
                                             {{ form.delete(class="btn") }}
                                         </td>
+                                        {{ form.id() }}
                                     </form>
                                 </tr>
                             {% endfor %}

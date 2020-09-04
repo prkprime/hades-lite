@@ -116,6 +116,7 @@ class PendingUserForm(FlaskForm):
     email = StringField(
         'Email'
     )
+    id = HiddenField()
     approve = SubmitField('Approve')
     reject = SubmitField('Reject')
 
@@ -126,4 +127,5 @@ class ApprovedUserForm(FlaskForm):
     email = StringField(
         'Email'
     )
+    id = HiddenField()
     delete = SubmitField('Delete')
