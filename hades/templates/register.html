@@ -6,8 +6,7 @@
 
 {% block content %}
     <div class="row mt-4">
-        <div class="col-md-4"></div>
-        <div class="col-md-4">
+        <div class="col-md-4 offset-md-4">
             <form method="POST" action="">
                 {{ form.hidden_tag() }}
                 <fieldset class="form-group">
@@ -74,6 +73,5 @@
                 </small>
             </div>
         </div>
-        <div class="col-md-4"></div>
     </div>
 {% endblock content%}

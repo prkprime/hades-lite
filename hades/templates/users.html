@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ title }}
+{% endblock title %}
+
+{% block content %}    
+    <div class="row mt-4">
+        <div class="col-md-4 offset-md-4">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif%}
+            {% endwith %}
+
+            {% if pending_user_forms %}
+                    <div class="">
+                        <h3 class="text-material-primary">Pending Users</h3>
+                    </div>
+                    <table class="text-material-primary">
+                        <tr>
+                            <th>
+                                Username
+                            </th>
+                            <th>
+                                Email
+                            </th>
+                            <th>
+                                Approve
+                            </th>
+                            <th>
+                                Delete
+                            </th>
+                        </tr>
+                        {% for form in pending_user_forms %}
+                            <tr>
+                                <form action="#", method="POST">
+                                    <td>
+                                        {{ form.username() }}
+                                    </td>
+                                    <td>
+                                        {{ form.email() }}
+                                    </td>
+                                    <td>
+                                        {{ form.approve(class="btn") }}
+                                    </td>
+                                    <td>
+                                        {{ form.delete(class="btn") }}
+                                    </td>
+                                </form>
+                            </tr>
+                        {% endfor %}
+                    </table>
+            {% endif %}
+
+            {% if approved_user_forms %}
+                    <div class="">
+                        <h3 class="text-material-primary">Users</h3>
+                    </div>
+                    <table class="text-material-primary">
+                        <tr>
+                            <th>
+                                Username
+                            </th>
+                            <th>
+                                Email
+                            </th>
+                            <th>
+                                Delete
+                            </th>
+                        </tr>
+                        {% for form in approved_user_forms %}
+                            <tr>
+                                <form action="#", method="POST">
+                                    <td>
+                                        {{ form.username() }}
+                                    </td>
+                                    <td>
+                                        {{ form.email() }}
+                                    </td>
+                                    <td>
+                                        {{ form.delete(class="btn") }}
+                                    </td>
+                                </form>
+                            </tr>
+                        {% endfor %}
+                    </table>
+            {% endif %}
+        </div>
+    </div>
+{% endblock content%}

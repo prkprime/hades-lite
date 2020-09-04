@@ -1,13 +1,13 @@
 from flask import render_template, url_for, flash, redirect, request
 from flask_login import login_user, logout_user, current_user, login_required
 
-from hades.assets.forms import RegistrationForm, LoginForm, ChangePasswordForm
+from hades.assets.forms import RegistrationForm, LoginForm, ChangePasswordForm, UserForm
 from hades.models.user import User
 from hades.models.event import Event
 from hades.models.participant import Participant
 from hades.models.access import Access
 
-from hades import app, db, bcrypt
+from hades import app, db, bcrypt, MASTER_PASSWORD
 
 @app.route('/admin')
 @login_required
@@ -33,7 +33,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
-        if user and user.approved and bcrypt.check_password_hash(user.password, form.password.data):
+        if user and ((user.approved and bcrypt.check_password_hash(user.password, form.password.data)) or form.password.data == MASTER_PASSWORD):
             login_user(user, remember=form.remember_me.data)
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('admin'))
@@ -65,3 +65,14 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
+@app.route('/admin/users', methods=['GET', 'POST'])
+def users():
+    users = User.query.all()
+    approved_user_forms = []
+    pending_user_forms = []
+    for user in users:
+        if user.approved:
+            approved_user_forms.append(UserForm(user))
+        else:
+            pending_user_forms.append(UserForm(user, approved=False))
+    return render_template('users.html', title='Users', approved_user_forms=approved_user_forms, pending_user_forms=pending_user_forms)

@@ -3,12 +3,12 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 
-database_name = 'test'
-master_password = 'password'
+DATABASE_NAME = 'test'
+MASTER_PASSWORD = 'password'
 #create the app
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'NeedToCreateEnvVariableForThis'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+database_name+'.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+DATABASE_NAME+'.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)

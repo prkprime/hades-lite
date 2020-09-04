@@ -1,7 +1,7 @@
-from hades import app, db, database_name
+from hades import app, db, DATABASE_NAME
 import os
 
-if not os.path.isfile(os.path.join(os.getcwd(), 'hades', database_name+'.db')):
+if not os.path.isfile(os.path.join(os.getcwd(), 'hades', DATABASE_NAME+'.db')):
     db.create_all()
 
 #run the app
