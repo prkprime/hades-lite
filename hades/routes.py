@@ -107,7 +107,9 @@ def users():
 @app.route('/admin/users/<action>/<id>')
 @login_required
 def manage_user(action, id):
-    if current_user.id == 1:
+    if int(id) == 1:
+        flash('Cannot delete the master user', 'danger')
+    elif current_user.id == 1:
         if action == 'approve':
             user = User.query.filter_by(id=id).first()
             user.approved = True

@@ -4,6 +4,8 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 
 DATABASE_NAME = 'test'
+MASTER_USERNAME = 'master'
+MASTER_EMAIL = 'master@master.master'
 MASTER_PASSWORD = 'password'
 #create the app
 app = Flask(__name__)
