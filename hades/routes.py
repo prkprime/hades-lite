@@ -4,8 +4,8 @@ from flask_login import login_user, logout_user, current_user, login_required
 from hades.assets.forms import RegistrationForm, LoginForm, ChangePasswordForm, AccountForm, PendingUserForm, ApprovedUserForm, CreateEventForm
 from hades.models.user import User
 from hades.models.event import Event
-from hades.models.participant import Participant
 from hades.models.access import Access
+from hades.models.participant import Participant
 
 from hades import app, db, bcrypt, MASTER_PASSWORD
 
@@ -100,7 +100,7 @@ def users():
             return redirect(url_for('manage_user', action='delete', id=request.form.get('id')))
     return render_template('users.html', title='Users', approved_user_forms=approved_user_forms, pending_user_forms=pending_user_forms)
 
-@app.route('/admin/users/<action>/<id>')
+@app.route('/admin/users/<string:action>/<int:id>')
 @login_required
 def manage_user(action, id):
     if int(id) == 1:
@@ -133,5 +133,21 @@ def create_event():
     form = CreateEventForm()
     if request.method == 'POST':
         if form.validate_on_submit():
-            pass
+            event = Event(
+                name=form.name.data,
+                description=form.description.data,
+                start_date=form.start_date.data,
+                start_time=form.start_time.data,
+                end_date=form.end_date.data,
+                end_time=form.end_time.data,
+                event_creator=current_user.id
+            )
+            db.session.add(event)
+            db.session.commit()
+            event = Event.query.filter_by(name=form.name.data).first()
+            access = Access(user_id=current_user.id, event_id=event.id)
+            db.session.add(access)
+            db.session.commit()
+            flash('Event created successfully', 'success')
+            return redirect(url_for('create_event'))
     return render_template('create_event.html', title='Create Event', form=form)
