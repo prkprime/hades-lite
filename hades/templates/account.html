@@ -24,7 +24,7 @@
                 <fieldset class="form-group">
                     <legend class="border-bottom mb-4 text-white-primary">Update Info</legend>
                     <div class="form-group">
-                        {{ account_form.username.label(class="form-control-label text-white-primary", pattern=".{2,15}", title="Username length should be 2-15 characters") }}
+                        {{ account_form.username.label(class="form-control-label text-white-primary") }}
                         {% if account_form.username.errors%}
                             {{ account_form.username(class="form-control form-control-lg is-invalid", pattern=".{2,15}", title="Username length should be 2-15 characters") }}
                             <div class="invalid-feedback">
@@ -73,7 +73,7 @@
                 <fieldset class="form-group">
                     <legend class="border-bottom mb-4 text-white-primary">Update Password</legend>
                     <div class="form-group">
-                        {{ passwd_form.new_password.label(class="form-control-label text-white-primary", pattern=".{8,20}", title="Password length should be 8-20 characters") }}
+                        {{ passwd_form.new_password.label(class="form-control-label text-white-primary") }}
                         {% if passwd_form.new_password.errors%}
                             {{ passwd_form.new_password(class="form-control form-control-lg is-invalid", pattern=".{8,20}", title="Password length should be 8-20 characters") }}
                             <div class="invalid-feedback">

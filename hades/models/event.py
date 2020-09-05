@@ -15,4 +15,4 @@ class Event(db.Model):
     users = db.relationship('User', secondary='access')
 
     def __repr__(self):
-        return f'Event( Id : {self.id}, Name : {self.name}, Start DateTime : {self.start_date_time}, End Datetime : {self.end_date_time}, ActiveState : {self.active_state} )'
+        return f'Event( Id : {self.id}, Name : {self.name}, Description : <Use Obj.description to get description>, Start DateTime : {self.start_date_time}, End Datetime : {self.end_date_time}, ActiveState : {self.active_state} )'

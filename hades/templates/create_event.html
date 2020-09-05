@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ title }}
+{% endblock title %}
+
+{% block content %}
+    <div class="row mt-4">
+        <div class="col-md-6 offset-md-3">
+            <form method="POST" action="#">
+                {{ form.hidden_tag() }}
+                <fieldset class="form-group">
+                    <div class="form-group">
+                        {{ form.name.label(class="form-control-label text-white-primary") }}
+                        {% if form.name.errors%}
+                            {{ form.name(class="form-control form-control-lg is-invalid", pattern=".{,100}", title="Maximum length 100 characters") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.name.errors %}
+                                    <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.name(class="form-control form-control-lg", pattern=".{,100}", title="Maximum length 100 characters") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.description.label(class="form-control-label text-white-primary") }}
+                        {% if form.description.errors%}
+                            {{ form.description(class="form-control form-control-lg is-invalid", rows=5) }}
+                            <div class="invalid-feedback">
+                                {% for error in form.description.errors %}
+                                    <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.description(class="form-control form-control-lg", rows=5) }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.start_date.label(class="form-control-label text-white-primary") }}
+                        {% if form.start_date.errors%}
+                            {{ form.start_date(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.start_date.errors %}
+                                    <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.start_date(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.start_time.label(class="form-control-label text-white-primary") }}
+                        {% if form.start_time.errors%}
+                            {{ form.start_time(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.start_time.errors %}
+                                    <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.start_time(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.end_date.label(class="form-control-label text-white-primary") }}
+                        {% if form.end_date.errors%}
+                            {{ form.end_date(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.end_date.errors %}
+                                    <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.end_date(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.end_time.label(class="form-control-label text-white-primary") }}
+                        {% if form.end_time.errors%}
+                            {{ form.end_time(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.end_time.errors %}
+                                    <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.end_time(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                </fieldset>
+                <div class="form-group">
+                    {{ form.submit(class="btn")}}
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content%}

@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request
 from flask_login import login_user, logout_user, current_user, login_required
 
-from hades.assets.forms import RegistrationForm, LoginForm, ChangePasswordForm, AccountForm, PendingUserForm, ApprovedUserForm
+from hades.assets.forms import RegistrationForm, LoginForm, ChangePasswordForm, AccountForm, PendingUserForm, ApprovedUserForm, CreateEventForm
 from hades.models.user import User
 from hades.models.event import Event
 from hades.models.participant import Participant
@@ -125,3 +125,13 @@ def manage_user(action, id):
     else:
         flash(f'You don\'t have sufficient rights.', 'danger')
     return redirect(url_for('users'))
+
+
+@app.route('/admin/events/create-event', methods=['POST', 'GET'])
+@login_required
+def create_event():
+    form = CreateEventForm()
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            pass
+    return render_template('create_event.html', title='Create Event', form=form)
