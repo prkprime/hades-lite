@@ -20,8 +20,8 @@
 
                 {% if pending_user_forms %}
                     <legend class="border-bottom mb-4 text-material-primary">Pending Users</legend>
-                    <div class="table-responsive">
-                        <table class="text-material-primary">
+                    <div class="table table-responsive">
+                        <table class="table-bordered text-material-primary">
                             <tr>
                                 <th>
                                     Username
@@ -40,18 +40,18 @@
                                 <tr>
                                     <form action="#", method="POST">
                                         <td>
-                                            {{ form.username(readonly=True) }}
+                                            {{ form[1] }}
                                         </td>
                                         <td>
-                                            {{ form.email(readonly=True) }}
+                                            {{ form[2] }}
                                         </td>
                                         <td>
-                                            {{ form.approve(class="btn") }}
+                                            {{ form[0].approve(class="btn") }}
                                         </td>
                                         <td>
-                                            {{ form.reject(class="btn") }}
+                                            {{ form[0].reject(class="btn btn-secondary") }}
                                         </td>
-                                        {{ form.id() }}
+                                        {{ form[0].id() }}
                                     </form>
                                 </tr>
                             {% endfor %}
@@ -63,8 +63,8 @@
             <div class="mt-4">
                 {% if approved_user_forms %}
                     <legend class="border-bottom mb-4 text-material-primary">Approved Users</legend>
-                    <div class="table-responsive">
-                        <table class="text-material-primary">
+                    <div class="table table-responsive">
+                        <table class="table-bordered text-material-primary">
                             <tr>
                                 <th>
                                     Username
@@ -80,15 +80,15 @@
                                 <tr>
                                     <form action="#", method="POST">
                                         <td>
-                                            {{ form.username(readonly=True) }}
+                                            {{ form[1] }}
                                         </td>
                                         <td>
-                                            {{ form.email(readonly=True) }}
+                                            {{ form[2] }}
                                         </td>
                                         <td>
-                                            {{ form.delete(class="btn") }}
+                                            {{ form[0].delete(class="btn btn-secondary") }}
                                         </td>
-                                        {{ form.id() }}
+                                        {{ form[0].id() }}
                                     </form>
                                 </tr>
                             {% endfor %}

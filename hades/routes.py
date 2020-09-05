@@ -87,14 +87,10 @@ def users():
     for user in users:
         if user.approved:
             form = ApprovedUserForm(id=user.id)
-            form.username.data = user.username
-            form.email.data = user.email
-            approved_user_forms[user.id] = form
+            approved_user_forms[user.id] = [form, user.username, user.email]
         else:
             form = PendingUserForm(id=user.id)
-            form.username.data = user.username
-            form.email.data = user.email
-            pending_user_forms[user.id] = form
+            pending_user_forms[user.id] = [form, user.username, user.email]
     if request.method == 'POST':
         if request.form.get('approve'):
             return redirect(url_for('manage_user', action='approve', id=request.form.get('id')))

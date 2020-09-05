@@ -110,22 +110,22 @@ class AccountForm(FlaskForm):
                 raise ValidationError('Account for this email is already created.')
 
 class PendingUserForm(FlaskForm):
-    username = StringField(
-        'Username',
-    )
-    email = StringField(
-        'Email'
-    )
+    # username = StringField(
+    #     'Username',
+    # )
+    # email = StringField(
+    #     'Email'
+    # )
     id = HiddenField()
     approve = SubmitField('Approve')
     reject = SubmitField('Reject')
 
 class ApprovedUserForm(FlaskForm):
-    username = StringField(
-        'Username',
-    )
-    email = StringField(
-        'Email'
-    )
+    # username = StringField(
+    #     'Username',
+    # )
+    # email = StringField(
+    #     'Email'
+    # )
     id = HiddenField()
     delete = SubmitField('Delete')
