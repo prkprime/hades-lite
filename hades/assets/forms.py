@@ -3,7 +3,7 @@ from wtforms import StringField, PasswordField, SubmitField, BooleanField, Label
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flask_login import current_user
 
-from hades.models.user import User
+from hades.models.user import User, 
 
 class RegistrationForm(FlaskForm):
     username = StringField(
@@ -110,22 +110,12 @@ class AccountForm(FlaskForm):
                 raise ValidationError('Account for this email is already created.')
 
 class PendingUserForm(FlaskForm):
-    # username = StringField(
-    #     'Username',
-    # )
-    # email = StringField(
-    #     'Email'
-    # )
     id = HiddenField()
     approve = SubmitField('Approve')
     reject = SubmitField('Reject')
 
 class ApprovedUserForm(FlaskForm):
-    # username = StringField(
-    #     'Username',
-    # )
-    # email = StringField(
-    #     'Email'
-    # )
     id = HiddenField()
     delete = SubmitField('Delete')
+
+class CreateEventForm()

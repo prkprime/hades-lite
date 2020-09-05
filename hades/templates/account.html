@@ -22,9 +22,9 @@
             <form method="POST" action="">
                 {{ account_form.hidden_tag() }}
                 <fieldset class="form-group">
-                    <legend class="border-bottom mb-4 text-material-primary">Update Info</legend>
+                    <legend class="border-bottom mb-4 text-white-primary">Update Info</legend>
                     <div class="form-group">
-                        {{ account_form.username.label(class="form-control-label text-material-primary") }}
+                        {{ account_form.username.label(class="form-control-label text-white-primary") }}
                         {% if account_form.username.errors%}
                             {{ account_form.username(class="form-control form-control-lg is-invalid") }}
                             <div class="invalid-feedback">
@@ -37,7 +37,7 @@
                         {% endif %}
                     </div>
                     <div class="form-group">
-                        {{ account_form.email.label(class="form-control-label text-material-primary") }}
+                        {{ account_form.email.label(class="form-control-label text-white-primary") }}
                         {% if account_form.email.errors%}
                             {{ account_form.email(class="form-control form-control-lg is-invalid") }}
                             <div class="invalid-feedback">
@@ -71,9 +71,9 @@
             <form method="POST" action="">
                 {{ passwd_form.hidden_tag() }}
                 <fieldset class="form-group">
-                    <legend class="border-bottom mb-4 text-material-primary">Update Password</legend>
+                    <legend class="border-bottom mb-4 text-white-primary">Update Password</legend>
                     <div class="form-group">
-                        {{ passwd_form.new_password.label(class="form-control-label text-material-primary") }}
+                        {{ passwd_form.new_password.label(class="form-control-label text-white-primary") }}
                         {% if passwd_form.new_password.errors%}
                             {{ passwd_form.new_password(class="form-control form-control-lg is-invalid") }}
                             <div class="invalid-feedback">
@@ -87,7 +87,7 @@
                     </div>
                     <fieldset class="form-group">
                         <div class="form-group">
-                            {{ passwd_form.confirm_password.label(class="form-control-label text-material-primary") }}
+                            {{ passwd_form.confirm_password.label(class="form-control-label text-white-primary") }}
                             {% if passwd_form.confirm_password.errors%}
                                 {{ passwd_form.confirm_password(class="form-control form-control-lg is-invalid") }}
                                 <div class="invalid-feedback">
