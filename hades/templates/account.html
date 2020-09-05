@@ -24,16 +24,16 @@
                 <fieldset class="form-group">
                     <legend class="border-bottom mb-4 text-white-primary">Update Info</legend>
                     <div class="form-group">
-                        {{ account_form.username.label(class="form-control-label text-white-primary") }}
+                        {{ account_form.username.label(class="form-control-label text-white-primary", pattern=".{2,15}", title="Username length should be 2-15 characters") }}
                         {% if account_form.username.errors%}
-                            {{ account_form.username(class="form-control form-control-lg is-invalid") }}
+                            {{ account_form.username(class="form-control form-control-lg is-invalid", pattern=".{2,15}", title="Username length should be 2-15 characters") }}
                             <div class="invalid-feedback">
                                 {% for error in account_form.username.errors %}
                                     <small>{{ error }}</small>
                                 {% endfor %}
                             </div>
                         {% else %}
-                            {{ account_form.username(class="form-control form-control-lg") }}
+                            {{ account_form.username(class="form-control form-control-lg", pattern=".{2,15}", title="Username length should be 2-15 characters") }}
                         {% endif %}
                     </div>
                     <div class="form-group">
@@ -73,16 +73,16 @@
                 <fieldset class="form-group">
                     <legend class="border-bottom mb-4 text-white-primary">Update Password</legend>
                     <div class="form-group">
-                        {{ passwd_form.new_password.label(class="form-control-label text-white-primary") }}
+                        {{ passwd_form.new_password.label(class="form-control-label text-white-primary", pattern=".{8,20}", title="Password length should be 8-20 characters") }}
                         {% if passwd_form.new_password.errors%}
-                            {{ passwd_form.new_password(class="form-control form-control-lg is-invalid") }}
+                            {{ passwd_form.new_password(class="form-control form-control-lg is-invalid", pattern=".{8,20}", title="Password length should be 8-20 characters") }}
                             <div class="invalid-feedback">
                                 {% for error in passwd_form.new_password.errors %}
                                     <small>{{ error }}</small>
                                 {% endfor %}
                             </div>
                         {% else %}
-                            {{ passwd_form.new_password(class="form-control form-control-lg") }}
+                            {{ passwd_form.new_password(class="form-control form-control-lg", pattern=".{8,20}", title="Password length should be 8-20 characters") }}
                         {% endif %}
                     </div>
                     <fieldset class="form-group">
