@@ -161,6 +161,12 @@ class CreateEventForm(FlaskForm):
             DataRequired()
         ]
     )
+    contact_email = EmailField(
+        'Contact Email',
+        validators = [
+            DataRequired()
+        ]
+    )
     submit = SubmitField('Create')
    
     def validate_name(self, name):

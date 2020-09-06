@@ -14,6 +14,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
     approved = db.Column(db.Boolean, nullable=False, default=False)
+
     events = db.relationship('Event', secondary='access')
 
     def __repr__(self):

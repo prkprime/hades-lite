@@ -7,6 +7,8 @@ from hades.models.event import Event
 from hades.models.access import Access
 from hades.models.participant import Participant
 
+import datetime
+
 from hades import app, db, bcrypt, MASTER_PASSWORD
 
 @app.route('/admin')
@@ -140,7 +142,8 @@ def create_event():
                 start_time=form.start_time.data,
                 end_date=form.end_date.data,
                 end_time=form.end_time.data,
-                event_creator=current_user.id
+                event_creator=current_user.id,
+                contact_email=form.contact_email.data
             )
             db.session.add(event)
             db.session.commit()
@@ -151,3 +154,20 @@ def create_event():
             flash('Event created successfully', 'success')
             return redirect(url_for('create_event'))
     return render_template('create_event.html', title='Create Event', form=form)
+
+@app.route('/admin/events')
+@login_required
+def events():
+    upcoming_events = []
+    past_events = []
+    events = Event.query.all()
+    for event in events:
+        if event.start_date < datetime.date.today():
+            past_events.append(event)
+        else:
+            upcoming_events.append(event)
+    if upcoming_events:
+        upcoming_events.sort(key=lambda event : event.start_date)
+    if past_events:
+        past_events.sort(key=lambda event : event.start_date, reverse=True)
+    return render_template('events.html', title='Events', upcoming_events=upcoming_events, past_events=past_events)
