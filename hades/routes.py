@@ -11,11 +11,23 @@ import datetime
 
 from hades import app, db, bcrypt, MASTER_PASSWORD
 
+@app.route('/')
+def index():
+    events = Event.query.filter(Event.start_date >= datetime.date.today()).filter(Event.active_state==False)
+    events = [event for event in events]
+    if events:
+        events.sort(key=lambda event : event.start_date)
+    return render_template('index.html', title='Hades Lite', events=events)
+
+@app.route('/<int:id>')
+def event(id):
+    print(id)
+    return render_template('event.html')
+
 @app.route('/admin')
 @login_required
 def admin():
     return render_template('admin.html')
-
 
 @app.route('/admin/register', methods=['GET', 'POST'])
 def register():

@@ -1,0 +1,39 @@
+{% extends "base2.html" %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            {% if events %}
+                <legend class="border-bottom mb-4 text-white-primary">Upcoming Events</legend>
+                {% for event in events %}
+                <a class="custom-card" href="{{ url_for('event', id=event.id) }}">
+                    <div class="card border-dark mt-4">
+                        <div class="card-header border-dark">
+                            <h3 class="text-white-primary">
+                                {{ event.name }}
+                            </h3>
+                        </div>
+                        <div class="card-body text-white-primary">
+                            <p>
+                                {{ event.description }}
+                            </p>
+                            <footer>
+                                From : {{ event.start_date }} {{ event.start_time }}
+                            </footer>
+                            <footer>
+                                To : {{ event.end_date }} {{ event.end_time }}
+                            </footer>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            {% else %}
+            <legend class="border-bottom mb-4 text-white-primary">No events right now</legend>
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}
