@@ -11,5 +11,7 @@ class Participant(db.Model):
     event_id = db.Column(db.Integer, db.ForeignKey('events.id'), nullable=False)
     attended = db.Column(db.Boolean, nullable=False, default=False)
 
+    event = db.relationship('Event', foreign_keys='Participant.event_id')
+
     def __repr__(self):
-        return f'Participant( FirstName : {self.firstname}, LastName : {self.lastname}, Email : {self.email}, EventId : {self.event_id}, Attended : {self.attended} )'
+        return f'Participant( Id : {self.id}, FirstName : {self.firstname}, LastName : {self.lastname}, Email : {self.email}, EventId : {self.event_id}, Attended : {self.attended} )'

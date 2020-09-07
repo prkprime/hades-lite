@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request
 from flask_login import login_user, logout_user, current_user, login_required
 
-from hades.assets.forms import RegistrationForm, LoginForm, ChangePasswordForm, AccountForm, PendingUserForm, ApprovedUserForm, CreateEventForm
+from hades.assets.forms import RegistrationForm, LoginForm, ChangePasswordForm, AccountForm, PendingUserForm, ApprovedUserForm, CreateEventForm, ParticipantForm
 from hades.models.user import User
 from hades.models.event import Event
 from hades.models.access import Access
@@ -19,10 +19,20 @@ def index():
         events.sort(key=lambda event : event.start_date)
     return render_template('index.html', title='Hades Lite', events=events)
 
-@app.route('/<int:id>')
+@app.route('/<int:id>', methods=['POST', 'GET'])
 def event(id):
-    print(id)
-    return render_template('event.html')
+    event = Event.query.filter_by(id=id).first()
+    form = ParticipantForm(event_id=id)
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            db.session.add(Participant(firstname=form.first_name.data, lastname=form.last_name.data, email=form.email.data, event_id=form.event_id.data))
+            db.session.commit()
+            flash('You have registered successfully', 'success')
+            return redirect(url_for('event', id=form.event_id.data))
+    if event.active_state==False:
+        return render_template('event.html', title=event.name, event=event, form=form)
+    else:
+        return render_template('event.html', title=event.name, event=None)
 
 @app.route('/admin')
 @login_required

@@ -13,7 +13,7 @@
                     <div class="form-group">
                         {{ form.username.label(class="form-control-label text-white-primary") }}
                         {% if form.username.errors%}
-                            {{ form.username(class="form-control form-control-lg is-invalid", pattern=".{2,15}", title="Username length should be 2-15 letters characters") }}
+                            {{ form.username(class="form-control form-control-lg is-invalid", pattern=".{2,15}", title="Username length should be 2-15 characters") }}
                             <div class="invalid-feedback">
                                 {% for error in form.username.errors %}
                                     <small>{{ error }}</small>

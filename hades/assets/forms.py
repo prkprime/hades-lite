@@ -9,6 +9,7 @@ import datetime
 
 from hades.models.user import User
 from hades.models.event import Event
+from hades.models.participant import Participant
 
 class RegistrationForm(FlaskForm):
     username = StringField(
@@ -102,13 +103,13 @@ class AccountForm(FlaskForm):
 
     def validate_username(self, username):
         if username.data != current_user.username:
-            user = User.query.filter_by(username=username.data).first()
+            user = User.query.filter_by(username=username.data.lower()).first()
             if user:
                 raise ValidationError('Username is already taken. Please choose different username')
     
     def validate_email(self, email):
         if email.data != current_user.email:
-            user = User.query.filter_by(email=email.data).first()
+            user = User.query.filter_by(email=email.data.lower()).first()
             if user:
                 raise ValidationError('Account for this email is already created.')
 
@@ -189,3 +190,32 @@ class CreateEventForm(FlaskForm):
     def validate_end_time(self, end_time):
         if self.start_date.data == self.end_date.data and end_time.data < self.start_time.data:
             raise ValidationError('Event cannot finish before it starts you Dark fan')
+
+class ParticipantForm(FlaskForm):
+    first_name = StringField(
+        'First Name',
+        validators = [
+            DataRequired(),
+            Length(max=100)
+        ]
+    )
+    last_name = StringField(
+        'Last Name',
+        validators = [
+            DataRequired(),
+            Length(max=100)
+        ]
+    )
+    email = EmailField(
+        'Email',
+        validators = [
+            DataRequired()
+        ]
+    )
+    event_id = HiddenField()
+    submit = SubmitField('Register')
+
+    def validate_email(self, email):
+        participant = Participant.query.filter(Participant.email==email.data.lower()).filter(Participant.event_id==self.event_id.data).first()
+        if participant:
+            raise ValidationError('Entered Email has already registered for this event.')
