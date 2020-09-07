@@ -29,10 +29,10 @@ def event(id):
             db.session.commit()
             flash('You have registered successfully', 'success')
             return redirect(url_for('event', id=form.event_id.data))
-    if event.active_state==False:
+    if event:
         return render_template('event.html', title=event.name, event=event, form=form)
     else:
-        return render_template('event.html', title=event.name, event=None)
+        return render_template('event.html', title='404', event=None)
 
 @app.route('/admin')
 @login_required

@@ -35,69 +35,73 @@
             <legend class="border-bottom mb-4 text-white-primary">This Event Doesn't exists</legend>
             {% endif %}
         </div>
-        <div class="col-md-4 offset-md-4 mt-4">
-            {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endif%}
-            {% endwith %}
-            <form method="POST" action="">
-                {{ form.hidden_tag() }}
-                <fieldset class="form-group">
+        {% if event %}
+            {% if not event.active_state %}
+            <div class="col-md-4 offset-md-4 mt-4">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif%}
+                {% endwith %}
+                <form method="POST" action="">
+                    {{ form.hidden_tag() }}
+                    <fieldset class="form-group">
+                        <div class="form-group">
+                            {{ form.first_name.label(class="form-control-label text-white-primary") }}
+                            {% if form.first_name.errors%}
+                                {{ form.first_name(class="form-control form-control-lg is-invalid", pattern=".{,100}", title="Max length 100 characters") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.first_name.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.first_name(class="form-control form-control-lg", pattern=".{,100}", title="Max length 100 characters") }}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {{ form.last_name.label(class="form-control-label text-white-primary") }}
+                            {% if form.last_name.errors%}
+                                {{ form.last_name(class="form-control form-control-lg is-invalid", pattern=".{,100}", title="Max length 100 characters") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.last_name.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.last_name(class="form-control form-control-lg", pattern=".{,100}", title="Max length 100 characters") }}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {{ form.email.label(class="form-control-label text-white-primary") }}
+                            {% if form.email.errors%}
+                                {{ form.email(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.email.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.email(class="form-control form-control-lg") }}
+                            {% endif %}
+                        </div>
+                        {{ form.event_id() }}
+                    </fieldset>
                     <div class="form-group">
-                        {{ form.first_name.label(class="form-control-label text-white-primary") }}
-                        {% if form.first_name.errors%}
-                            {{ form.first_name(class="form-control form-control-lg is-invalid", pattern=".{,100}", title="Max length 100 characters") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.first_name.errors %}
-                                    <small>{{ error }}</small>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ form.first_name(class="form-control form-control-lg", pattern=".{,100}", title="Max length 100 characters") }}
-                        {% endif %}
+                        {{ form.submit(class="btn")}}
                     </div>
-                    <div class="form-group">
-                        {{ form.last_name.label(class="form-control-label text-white-primary") }}
-                        {% if form.last_name.errors%}
-                            {{ form.last_name(class="form-control form-control-lg is-invalid", pattern=".{,100}", title="Max length 100 characters") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.last_name.errors %}
-                                    <small>{{ error }}</small>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ form.last_name(class="form-control form-control-lg", pattern=".{,100}", title="Max length 100 characters") }}
-                        {% endif %}
-                    </div>
-                    <div class="form-group">
-                        {{ form.email.label(class="form-control-label text-white-primary") }}
-                        {% if form.email.errors%}
-                            {{ form.email(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.email.errors %}
-                                    <small>{{ error }}</small>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ form.email(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div>
-                    {{ form.event_id() }}
-                </fieldset>
-                <div class="form-group">
-                    {{ form.submit(class="btn")}}
+                </form>
+                <div class="border-top pt-3">
+                    <small class="text-muted">
+                        Have any doubts? <a href="mailto:{{ event.contact_email }}" target="_blank">Contact Organizer</a>
+                    </small>
                 </div>
-            </form>
-            <div class="border-top pt-3">
-                <small class="text-muted">
-                    Have any doubts? <a href="mailto:{{ event.contact_email }}" target="_blank">Contact Organizer</a>
-                </small>
             </div>
-        </div>
+            {% endif %}
+        {% endif %}
     </div>
 {% endblock content %}
