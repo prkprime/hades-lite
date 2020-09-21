@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request
 from flask_login import login_user, logout_user, current_user, login_required
 
-from hades.assets.forms import RegistrationForm, LoginForm, ChangePasswordForm, AccountForm, PendingUserForm, ApprovedUserForm, CreateEventForm, ParticipantForm
+from hades.assets.forms import RegistrationForm, LoginForm, ChangePasswordForm, AccountForm, PendingUserForm, ApprovedUserForm, CreateEventForm, ParticipantForm, PresentForm, AbsentForm
 from hades.models.user import User
 from hades.models.event import Event
 from hades.models.access import Access
@@ -193,3 +193,25 @@ def events():
     if past_events:
         past_events.sort(key=lambda event : event.start_date, reverse=True)
     return render_template('events.html', title='Events', upcoming_events=upcoming_events, past_events=past_events)
+
+@app.route('/admin/events/<int:id>')
+@login_required
+def view_event(id):
+    event = Event.query.filter_by(id=id).first()
+    if event and current_user in event.users:
+        absent_forms = []
+        present_forms = []
+        for participant in event.participants:
+            if participant.attended:
+                form = PresentForm(id=participant.id)
+                present_forms.append([participant, form])
+            else:
+                form = AbsentForm(id=participant.id)
+                absent_forms.append([participant, form])
+        return render_template('participants.html', title='event.name', event=event, present_forms=present_forms, absent_forms=absent_forms)
+    elif event:
+        flash('You Don\'t have access to this event.', 'danger')
+        return redirect(url_for('events'))
+    else:
+        flash('Event you tried to access does not exists.', 'danger')
+        return redirect(url_for('events'))

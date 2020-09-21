@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ title }}
+{% endblock title %}
+
+{% block content %}    
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="mt-4">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif%}
+                {% endwith %}
+
+                {% if present_forms %}
+                    <legend class="border-bottom mb-4 text-white-primary">Present List</legend>
+                    <div class="table table-responsive">
+                        <table class="table-bordered text-white-primary">
+                            <tr>
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Email
+                                </th>
+                                <th>
+                                    Attendance
+                                </th>
+                            </tr>
+                            {% for form in present_forms %}
+                                <tr>
+                                    <td>
+                                        {{ form[0].firstname+" "+form[0].lastname }}
+                                    </td>
+                                    <td>
+                                        {{ form[0].email }}
+                                    </td>
+                                    <form action="#">
+                                        {{ form[1].id() }}
+                                        <td>
+                                            {{ form[1].mark_absent(class="btn btn-secondary") }}
+                                        </td>
+                                    </form>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="mt-4">
+                {% if absent_forms %}
+                    <legend class="border-bottom mb-4 text-white-primary">Absent List</legend>
+                    <div class="table table-responsive">
+                        <table class="table-bordered text-white-primary">
+                            <tr>
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Email
+                                </th>
+                                <th>
+                                    Attendance
+                                </th>
+                            </tr>
+                            {% for form in absent_forms %}
+                                <tr>
+                                    <td>
+                                        {{ form[0].firstname+" "+form[0].lastname }}
+                                    </td>
+                                    <td>
+                                        {{ form[0].email }}
+                                    </td>
+                                    <form action="#">
+                                        {{ form[1].id() }}
+                                        <td>
+                                            {{ form[1].mark_present(class="btn") }}
+                                        </td>
+                                    </form>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock content%}

@@ -1,5 +1,7 @@
 from hades import db
 
+from hades.models.participant import Participant
+
 class Event(db.Model):
 
     __tablename__ = 'events'
@@ -17,6 +19,8 @@ class Event(db.Model):
 
     users = db.relationship('User', secondary='access')
     creator = db.relationship('User', foreign_keys='Event.event_creator')
+    
+    participants = db.relationship(Participant, backref=db.backref('events'))
 
     def __repr__(self):
         return f'Event( Id : {self.id}, Name : {self.name}, Description : <Use Obj.description to get description>, Start Date : {self.start_date}, Start Time : {self.start_time}, End Date : {self.end_date}, End Time : {self.end_time}, Event Creator : {self.event_creator} ActiveState : {self.active_state} )'

@@ -219,3 +219,13 @@ class ParticipantForm(FlaskForm):
         participant = Participant.query.filter(Participant.email==email.data.lower()).filter(Participant.event_id==self.event_id.data).first()
         if participant:
             raise ValidationError('Entered Email has already registered for this event.')
+
+class AbsentForm(FlaskForm):
+    id = HiddenField()
+    attended = HiddenField()
+    mark_present = SubmitField('Mark Present')
+
+class PresentForm(FlaskForm):
+    id = HiddenField()
+    attended = HiddenField()
+    mark_absent = SubmitField('Mark Absent')
