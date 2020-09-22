@@ -221,11 +221,9 @@ class ParticipantForm(FlaskForm):
             raise ValidationError('Entered Email has already registered for this event.')
 
 class AbsentForm(FlaskForm):
-    id = HiddenField()
-    attended = HiddenField()
+    p_id = HiddenField()
     mark_present = SubmitField('Mark Present')
 
 class PresentForm(FlaskForm):
-    id = HiddenField()
-    attended = HiddenField()
+    p_id = HiddenField()
     mark_absent = SubmitField('Mark Absent')

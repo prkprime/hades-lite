@@ -105,6 +105,13 @@ def logout():
 @app.route('/admin/users', methods=['GET', 'POST'])
 @login_required
 def users():
+    if request.method == 'POST':
+        if request.form.get('approve'):
+            return redirect(url_for('manage_user', action='approve', id=request.form.get('id')))
+        elif request.form.get('reject'):
+            return redirect(url_for('manage_user', action='reject', id=request.form.get('id')))
+        elif request.form.get('delete'):
+            return redirect(url_for('manage_user', action='delete', id=request.form.get('id')))
     users = User.query.all()
     approved_user_forms = {}
     pending_user_forms = {}
@@ -115,13 +122,6 @@ def users():
         else:
             form = PendingUserForm(id=user.id)
             pending_user_forms[user.id] = [form, user.username, user.email]
-    if request.method == 'POST':
-        if request.form.get('approve'):
-            return redirect(url_for('manage_user', action='approve', id=request.form.get('id')))
-        elif request.form.get('reject'):
-            return redirect(url_for('manage_user', action='reject', id=request.form.get('id')))
-        elif request.form.get('delete'):
-            return redirect(url_for('manage_user', action='delete', id=request.form.get('id')))
     return render_template('users.html', title='Users', approved_user_forms=approved_user_forms, pending_user_forms=pending_user_forms)
 
 @app.route('/admin/users/<string:action>/<int:id>')
@@ -194,24 +194,47 @@ def events():
         past_events.sort(key=lambda event : event.start_date, reverse=True)
     return render_template('events.html', title='Events', upcoming_events=upcoming_events, past_events=past_events)
 
-@app.route('/admin/events/<int:id>')
+@app.route('/admin/events/<int:event_id>', methods=['POST', 'GET'])
 @login_required
-def view_event(id):
-    event = Event.query.filter_by(id=id).first()
+def view_participants(event_id):
+    if request.method == 'POST':
+        if request.form.get('mark_present'):
+            return redirect(url_for('mark_attendance', event_id=event_id, action='mark_present', p_id=request.form.get('p_id')))
+        elif request.form.get('mark_absent'):
+            return redirect(url_for('mark_attendance', event_id=event_id, action='mark_absent', p_id=request.form.get('p_id')))
+    event = Event.query.filter_by(id=event_id).first()
     if event and current_user in event.users:
         absent_forms = []
         present_forms = []
-        for participant in event.participants:
-            if participant.attended:
-                form = PresentForm(id=participant.id)
-                present_forms.append([participant, form])
+        for p in event.participants:
+            print(p.id)
+            if p.attended:
+                form = PresentForm(p_id=p.id)
+                present_forms.append([p, form])
             else:
-                form = AbsentForm(id=participant.id)
-                absent_forms.append([participant, form])
-        return render_template('participants.html', title='event.name', event=event, present_forms=present_forms, absent_forms=absent_forms)
+                form = AbsentForm(p_id=p.id)
+                absent_forms.append([p, form])
+        return render_template('participants.html', title=event.name, event=event, present_forms=present_forms, absent_forms=absent_forms)
     elif event:
         flash('You Don\'t have access to this event.', 'danger')
         return redirect(url_for('events'))
     else:
         flash('Event you tried to access does not exists.', 'danger')
         return redirect(url_for('events'))
+
+@app.route('/admin/events/<int:event_id>/<string:action>/<int:p_id>')
+@login_required
+def mark_attendance(event_id, action, p_id):
+    participant = Participant.query.filter_by(id=p_id).first()
+    print(participant)
+    if action=='mark_present':
+        participant.attended = True
+        db.session.add(participant)
+        db.session.commit()
+    elif action=='mark_absent':
+        participant.attended = False
+        db.session.add(participant)
+        db.session.commit()
+    else:
+        flash('Action not recognized', 'danger')
+    return redirect(url_for('view_participants', event_id=event_id))
