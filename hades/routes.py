@@ -226,7 +226,6 @@ def view_participants(event_id):
 @login_required
 def mark_attendance(event_id, action, p_id):
     participant = Participant.query.filter_by(id=p_id).first()
-    print(participant)
     if action=='mark_present':
         participant.attended = True
         db.session.add(participant)
