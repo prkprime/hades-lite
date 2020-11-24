@@ -1,1 +1,1 @@
-web: ./debug.sh
+web: gunicorn hades:app
