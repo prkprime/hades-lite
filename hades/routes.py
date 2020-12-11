@@ -137,14 +137,12 @@ def manage_user(action, id):
             db.session.commit()
             flash(f'Approved user \'{user.username}\' successfully', 'success')
         elif action == 'reject' or action == 'delete':
-            print('1')
             username = User.query.filter_by(id=id).first().username
             db.session.query(User).filter_by(id=id).delete()
             db.session.commit()
             if action == 'reject':
                 flash(f'Rejected user \'{username}\' successfully', 'success')
             else:
-                print('1')
                 flash(f'Deleted user \'{username}\' successfully', 'success')
     else:
         flash(f'You don\'t have sufficient rights.', 'danger')
@@ -207,7 +205,6 @@ def view_participants(event_id):
         absent_forms = []
         present_forms = []
         for p in event.participants:
-            print(p.id)
             if p.attended:
                 form = PresentForm(p_id=p.id)
                 present_forms.append([p, form])
