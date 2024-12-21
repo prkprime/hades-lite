@@ -21,6 +21,28 @@ cp example.env .env
 gunicorn hades:app -b 0.0.0.0:5500
 ```
 
-### Screenshots
+# Screenshots
 
-check hades/screenshots folder
+## Login Screen
+![Login Screen](hades/screenshots/1.png)
+
+## Dropdown Menu
+![Login Screen](hades/screenshots/2.png)
+
+## Update Username Password
+![Login Screen](hades/screenshots/3.png)
+
+## User Management (Master Admin only)
+![Login Screen](hades/screenshots/4.png)
+
+## Add Event (Admin Only)
+![Login Screen](hades/screenshots/5.png)
+
+## View Events (Admin Users)
+![Login Screen](hades/screenshots/6.png)
+
+## Participents and Attendence (Event Creator Admin only)
+![Login Screen](hades/screenshots/7.png)
+
+## Upcoming Events (Normal User)
+![Login Screen](hades/screenshots/8.png)
